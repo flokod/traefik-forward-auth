@@ -1,15 +1,13 @@
 FROM alpine AS builder
 
 ARG VERSION
-ARG ARCH=amd64
+ARG TARGETARCH
 
-RUN apk add wget && wget https://github.com/thomseddon/traefik-forward-auth/releases/download/v$VERSION/traefik-forward-auth_$ARCH
+RUN apk add wget && wget --no-verbose -O /traefik-forward-auth https://github.com/thomseddon/traefik-forward-auth/releases/download/v$VERSION/traefik-forward-auth_$TARGETARCH
 
 FROM gcr.io/distroless/static
 
-ARG ARCH=amd64
-
 WORKDIR /app
-COPY --from=builder --chmod=755 /traefik-forward-auth_$ARCH /app/traefik-forward-auth
+COPY --from=builder --chmod=755 /traefik-forward-auth /app/traefik-forward-auth
 
 ENTRYPOINT ["/app/traefik-forward-auth"]
