@@ -1,6 +1,7 @@
 name: Build & Push
 
-on: [ push ]
+on:
+  workflow_dispatch:
 
 env:
   # Pin the base version of traefik-forward-auth to download and include in final image
@@ -8,6 +9,7 @@ env:
   VERSION: 2.3.0
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}
+
 jobs:
   build_and_push:
     name: Build & Push image to registry
